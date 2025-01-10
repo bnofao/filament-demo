@@ -4,7 +4,7 @@
 
 # Learn more about the Server Side Up PHP Docker Images at:
 # https://serversideup.net/open-source/docker-php/ serversideup/php:beta8.2-fpm-nginx
-FROM serversideup/php:beta-8.2-fpm-nginx-alpine AS base
+FROM serversideup/php:8.2-fpm-nginx-alpine-v3.0.0 AS base
 
 # ENV S6_CMD_WAIT_FOR_SERVICES=1
 
