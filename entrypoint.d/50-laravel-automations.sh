@@ -41,6 +41,8 @@ test_db_connection() {
 composer install --prefer-dist --optimize-autoloader
 # composer update
 
+cat "$APP_BASE_DIR/.env"
+
 if [ "$DISABLE_DEFAULT_CONFIG" = "false" ]; then
     # Check to see if an Artisan file exists and assume it means Laravel is configured.
     if [ -f "$APP_BASE_DIR/artisan" ] && [ "$AUTORUN_ENABLED" = "true" ]; then
