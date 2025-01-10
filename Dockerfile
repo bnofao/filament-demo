@@ -6,7 +6,7 @@
 # https://serversideup.net/open-source/docker-php/ serversideup/php:beta8.2-fpm-nginx
 FROM serversideup/php:beta-8.2-fpm-nginx-alpine AS base
 
-# ENV S6_CMD_WAIT_FOR_SERVICES=1
+ENV S6_CMD_WAIT_FOR_SERVICES=1
 
 COPY --chmod=755 ./entrypoint.d/ /etc/entrypoint.d/
 
@@ -15,7 +15,7 @@ USER root
 RUN install-php-extensions bcmath gd intl
 
 # As root, run the docker-php-serversideup-s6-init script
-# RUN docker-php-serversideup-s6-init
+RUN docker-php-serversideup-s6-init
 
 ############################################
 # Production Image
