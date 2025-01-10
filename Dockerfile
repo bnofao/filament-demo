@@ -4,7 +4,7 @@
 
 # Learn more about the Server Side Up PHP Docker Images at:
 # https://serversideup.net/open-source/docker-php/
-FROM serversideup/php:8.2-fpm-nginx-alpine AS base
+FROM serversideup/php:8.2-fpm-alpine-v3.0.0 AS base
 
 COPY --chmod=755 ./entrypoint.d/ /etc/entrypoint.d/
 
@@ -19,4 +19,4 @@ FROM base AS deploy
 COPY --chown=www-data:www-data . /var/www/html
 USER www-data
 
-RUN composer install --quiet --prefer-dist --optimize-autoloader
+# RUN composer install --quiet --prefer-dist --optimize-autoloader
