@@ -43,22 +43,24 @@ class AddressForm extends Forms\Components\Field
             Forms\Components\Grid::make()
                 ->schema([
                     Forms\Components\Select::make('country')
+                        ->label('Pays')
                         ->searchable()
                         ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                         ->getOptionLabelUsing(fn ($value): ?string => Country::firstWhere('id', $value)?->getAttribute('name')),
                 ]),
             Forms\Components\TextInput::make('street')
-                ->label('Street address')
+                ->label('Rue')
                 ->maxLength(255),
             Forms\Components\Grid::make(3)
                 ->schema([
                     Forms\Components\TextInput::make('city')
+                        ->label('Ville')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('state')
-                        ->label('State / Province')
+                        ->label('État / Region')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('zip')
-                        ->label('Zip / Postal code')
+                        ->label('Zip / Code postal')
                         ->maxLength(255),
                 ]),
         ];

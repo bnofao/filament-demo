@@ -34,6 +34,8 @@ class OrderResource extends Resource
 
     protected static ?string $navigationGroup = 'Shop';
 
+    protected static ?string $modelLabel = 'Commande';
+
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     protected static ?int $navigationSort = 1;
@@ -48,11 +50,12 @@ class OrderResource extends Resource
                             ->schema(static::getDetailsFormSchema())
                             ->columns(2),
 
-                        Forms\Components\Section::make('Order items')
+                        Forms\Components\Section::make('Lignes de commande')
                             ->headerActions([
                                 Action::make('reset')
-                                    ->modalHeading('Are you sure?')
-                                    ->modalDescription('All existing items will be removed from the order.')
+                                    ->label('Réinitialiser')
+                                    ->modalHeading('Êtes-vous sûre?')
+                                    ->modalDescription('Toutes les lignes seront supprimées de la commande.')
                                     ->requiresConfirmation()
                                     ->color('danger')
                                     ->action(fn (Forms\Set $set) => $set('items', [])),
@@ -66,11 +69,11 @@ class OrderResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
-                            ->label('Created at')
+                            ->label('Date de création')
                             ->content(fn (Order $record): ?string => $record->created_at?->diffForHumans()),
 
                         Forms\Components\Placeholder::make('updated_at')
-                            ->label('Last modified at')
+                            ->label('Date de dernière modification')
                             ->content(fn (Order $record): ?string => $record->updated_at?->diffForHumans()),
                     ])
                     ->columnSpan(['lg' => 1])
@@ -84,20 +87,25 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('number')
+                    ->label(__('Code'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('customer.name')
+                    ->label(__('Client'))
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label(__('Statuts'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('currency')
+                    ->label(__('Devise'))
                     ->getStateUsing(fn ($record): ?string => Currency::find($record->currency)?->name ?? null)
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('total_price')
+                    ->label(__('Montant'))
                     ->searchable()
                     ->sortable()
                     ->summarize([
@@ -105,7 +113,7 @@ class OrderResource extends Resource
                             ->money(),
                     ]),
                 Tables\Columns\TextColumn::make('shipping_price')
-                    ->label('Shipping cost')
+                    ->label(__('Prix de livraison'))
                     ->searchable()
                     ->sortable()
                     ->toggleable()
@@ -114,7 +122,7 @@ class OrderResource extends Resource
                             ->money(),
                     ]),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Order Date')
+                    ->label(__('Date'))
                     ->date()
                     ->toggleable(),
             ])
@@ -126,7 +134,7 @@ class OrderResource extends Resource
                         Forms\Components\DatePicker::make('created_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
                         Forms\Components\DatePicker::make('created_until')
-                            ->placeholder(fn ($state): string => now()->format('M d, Y')),
+                            ->placeholder(fn ($state): string => now()->format('d M Y')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -233,6 +241,7 @@ class OrderResource extends Resource
     {
         return [
             Forms\Components\TextInput::make('number')
+                ->label('Code')
                 ->default('OR-' . random_int(100000, 999999))
                 ->disabled()
                 ->dehydrated()
@@ -241,46 +250,51 @@ class OrderResource extends Resource
                 ->unique(Order::class, 'number', ignoreRecord: true),
 
             Forms\Components\Select::make('shop_customer_id')
+                ->label('Client')
                 ->relationship('customer', 'name')
                 ->searchable()
                 ->required()
                 ->createOptionForm([
                     Forms\Components\TextInput::make('name')
+                        ->label('Nom')
                         ->required()
                         ->maxLength(255),
 
                     Forms\Components\TextInput::make('email')
-                        ->label('Email address')
+                        ->label('Email')
                         ->required()
                         ->email()
                         ->maxLength(255)
                         ->unique(),
 
                     Forms\Components\TextInput::make('phone')
+                        ->label('Téléphone')
                         ->maxLength(255),
 
                     Forms\Components\Select::make('gender')
-                        ->placeholder('Select gender')
+                        ->placeholder('Genre')
                         ->options([
-                            'male' => 'Male',
-                            'female' => 'Female',
+                            'male' => 'Homme',
+                            'female' => 'Femme',
                         ])
                         ->required()
                         ->native(false),
                 ])
                 ->createOptionAction(function (Action $action) {
                     return $action
-                        ->modalHeading('Create customer')
-                        ->modalSubmitActionLabel('Create customer')
+                        ->modalHeading('Créer un client')
+                        ->modalSubmitActionLabel('Créer un client')
                         ->modalWidth('lg');
                 }),
 
             Forms\Components\ToggleButtons::make('status')
+                ->label('Status')
                 ->inline()
                 ->options(OrderStatus::class)
                 ->required(),
 
             Forms\Components\Select::make('currency')
+                ->label('Devise')
                 ->searchable()
                 ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                 ->getOptionLabelUsing(fn ($value): ?string => Currency::firstWhere('id', $value)?->getAttribute('name'))
@@ -300,7 +314,7 @@ class OrderResource extends Resource
             ->relationship()
             ->schema([
                 Forms\Components\Select::make('shop_product_id')
-                    ->label('Product')
+                    ->label('Produit')
                     ->options(Product::query()->pluck('name', 'id'))
                     ->required()
                     ->reactive()
@@ -313,7 +327,7 @@ class OrderResource extends Resource
                     ->searchable(),
 
                 Forms\Components\TextInput::make('qty')
-                    ->label('Quantity')
+                    ->label('Quantité')
                     ->numeric()
                     ->default(1)
                     ->columnSpan([
@@ -322,7 +336,7 @@ class OrderResource extends Resource
                     ->required(),
 
                 Forms\Components\TextInput::make('unit_price')
-                    ->label('Unit Price')
+                    ->label('Prix unitaire')
                     ->disabled()
                     ->dehydrated()
                     ->numeric()
@@ -348,6 +362,7 @@ class OrderResource extends Resource
                     }, shouldOpenInNewTab: true)
                     ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['shop_product_id'])),
             ])
+            ->label('commande')
             ->orderColumn('sort')
             ->defaultItems(1)
             ->hiddenLabel()

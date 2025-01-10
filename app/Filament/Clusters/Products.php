@@ -12,5 +12,7 @@ class Products extends Cluster
 
     protected static ?int $navigationSort = 0;
 
+    protected static ?string $navigationLabel = 'Produits';
+
     protected static ?string $slug = 'shop/products';
 }

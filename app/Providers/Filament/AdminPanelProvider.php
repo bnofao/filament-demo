@@ -35,8 +35,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->unsavedChangesAlerts()
             ->brandLogo(fn () => view('filament.app.logo'))
@@ -62,7 +62,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugin(
                 SpatieLaravelTranslatablePlugin::make()
-                    ->defaultLocales(['en', 'es', 'nl']),
+                    ->defaultLocales(['fr', 'en', 'es', 'nl']),
             );
     }
 }
