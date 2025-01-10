@@ -12,8 +12,10 @@ COPY --chmod=755 ./entrypoint.d/ /etc/entrypoint.d/
 
 # Switch to root before installing our PHP extensions
 USER root
-RUN install-php-extensions bcmath gd intl && \
-    composer self-update --1
+RUN install-php-extensions bcmath gd intl
+
+# As root, run the docker-php-serversideup-s6-init script
+RUN docker-php-serversideup-s6-init
 
 ############################################
 # Production Image

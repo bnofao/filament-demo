@@ -7,8 +7,8 @@ services:
       AUTORUN_ENABLED: true
       PHP_OPCACHE_ENABLE: 1
       LOG_OUTPUT_LEVEL: debug
-      PHP_POST_MAX_SIZE: "500M"
-      PHP_UPLOAD_MAX_FILE_SIZE: "500M"
+      # PHP_POST_MAX_SIZE: "500M"
+      # PHP_UPLOAD_MAX_FILE_SIZE: "500M"
       # SSL_MODE: "mixed"
     # ports:
     #   - 80:8080
