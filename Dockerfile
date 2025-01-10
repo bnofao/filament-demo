@@ -6,6 +6,8 @@
 # https://serversideup.net/open-source/docker-php/
 FROM serversideup/php:8.2-fpm-alpine-v3.0.0 AS base
 
+ENV S6_CMD_WAIT_FOR_SERVICES=1
+
 COPY --chmod=755 ./entrypoint.d/ /etc/entrypoint.d/
 
 # Switch to root before installing our PHP extensions
@@ -19,4 +21,4 @@ FROM base AS deploy
 COPY --chown=www-data:www-data . /var/www/html
 USER www-data
 
-# RUN composer install --quiet --prefer-dist --optimize-autoloader
+RUN composer install --quiet --prefer-dist --optimize-autoloader
