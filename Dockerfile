@@ -21,4 +21,4 @@ FROM base AS deploy
 COPY --chown=www-data:www-data . /var/www/html
 USER www-data
 
-# RUN composer install --quiet --prefer-dist --optimize-autoloader
+RUN composer install --quiet
