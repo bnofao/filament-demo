@@ -13,4 +13,6 @@ services:
     #   - 80:8080
     #   - 443:8443
     volumes:
-      - .:/var/www/html/
+      - demo-app:/var/www/html/
+volumes:
+  demo-app:
