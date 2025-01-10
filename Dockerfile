@@ -10,7 +10,7 @@ COPY --chmod=755 ./entrypoint.d/ /etc/entrypoint.d/
 
 # Switch to root before installing our PHP extensions
 USER root
-RUN install-php-extensions bcmath gd
+RUN install-php-extensions bcmath gd intl
 
 ############################################
 # Production Image
@@ -18,5 +18,3 @@ RUN install-php-extensions bcmath gd
 FROM base AS deploy
 COPY --chown=www-data:www-data . /var/www/html
 USER www-data
-
-RUN composer install --quiet --prefer-dist --optimize-autoloader
