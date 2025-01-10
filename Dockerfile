@@ -15,7 +15,7 @@ USER root
 RUN install-php-extensions bcmath gd intl exif
 
 # As root, run the docker-php-serversideup-s6-init script
-RUN docker-php-serversideup-s6-init
+# RUN docker-php-serversideup-s6-init
 
 ############################################
 # Production Image
@@ -24,4 +24,4 @@ FROM base AS deploy
 COPY --chown=www-data:www-data . /var/www/html
 USER www-data
 
-# RUN composer self-update --1 && composer install --quiet --prefer-dist --optimize-autoloader
+# RUN composer install --quiet --prefer-dist --optimize-autoloader
