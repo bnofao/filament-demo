@@ -38,7 +38,7 @@ test_db_connection() {
 : "${AUTORUN_LARAVEL_MIGRATION_TIMEOUT:=30}"
 
 # ls $APP_BASE_DIR
-# composer install --prefer-dist --optimize-autoloader
+cd "$APP_BASE_DIR" && composer install --prefer-dist --optimize-autoloader
 # composer update
 
 ls "$APP_BASE_DIR"
