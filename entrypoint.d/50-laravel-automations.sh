@@ -51,6 +51,9 @@ if [ "$DISABLE_DEFAULT_CONFIG" = "false" ]; then
         ############################################################################
         # touch db
         ############################################################################
+        if [ -f "$APP_BASE_DIR/database/database.sqlite" ]; then
+            rm "$APP_BASE_DIR/database/database.sqlite"
+        fi
         echo "🚀 Creating SQLite DB..."
         touch "$APP_BASE_DIR/database/database.sqlite"
 
