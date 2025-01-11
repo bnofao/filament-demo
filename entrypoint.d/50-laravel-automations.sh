@@ -41,7 +41,7 @@ test_db_connection() {
 cd "$APP_BASE_DIR" && composer install --prefer-dist --optimize-autoloader
 # composer update
 
-ls "$APP_BASE_DIR"
+# ls "$APP_BASE_DIR"
 
 if [ "$DISABLE_DEFAULT_CONFIG" = "false" ]; then
     # Check to see if an Artisan file exists and assume it means Laravel is configured.
